@@ -30,8 +30,7 @@ class App extends React.Component {
         pageView: true,
         click: true,
         scroll: true,
-        onUnload: true,
-        jsError: true
+        onUnload: true
       }
     };
     var config: IExtendedConfiguration = {

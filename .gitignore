@@ -6,3 +6,5 @@
 /node_modules
 /dist-esm
 /bundle
+.vs/VSWorkspaceState.json
+.vs/slnx.sqlite
