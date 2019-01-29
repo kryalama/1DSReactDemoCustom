@@ -1,18 +1,25 @@
 import * as React from 'react';
 import { initializeIcons } from '@uifabric/icons';
-import {
-  ApplicationInsights, IExtendedConfiguration, IWebAnalyticsConfiguration
-} from '@ms/1ds-analytics-web-js';
+import { AppInsightsCore, IExtendedConfiguration } from '@ms/1ds-core-js';
+import { ApplicationInsights, IWebAnalyticsConfiguration } from '@ms/1ds-wa-js';
+import { PropertiesPlugin } from '@ms/1ds-properties-js';
+import { PostChannel } from '@ms/1ds-post-js';
+import { Sender } from '@microsoft/applicationinsights-channel-js';
 import Home from './Home';
 
 class App extends React.Component {
 
-  private appInsights: ApplicationInsights = new ApplicationInsights();
+  private appInsightsCore: AppInsightsCore = new AppInsightsCore();
+  private webAnalyticsPlugin: ApplicationInsights = new ApplicationInsights();
+  private propertiesPlugin: PropertiesPlugin = new PropertiesPlugin();
+  private breezeChannelPlugin: Sender = new Sender();
+  private collectorChannelPlugin: PostChannel = new PostChannel();
 
   constructor(props: any) {
     super(props);
     initializeIcons();
-    this.initializeTelemetry();
+    var useBreeze = true;
+    this.initializeTelemetry(useBreeze);
   }
 
   public render() {
@@ -21,10 +28,10 @@ class App extends React.Component {
     );
   }
 
-  private initializeTelemetry() {
-    this.appInsights = new ApplicationInsights();
+  private initializeTelemetry(useBreeze: boolean) {
     // Configure ApplicationInsights
     var instrumentationKey = "YOUR_TENANT_KEY";
+    var endpoint = useBreeze ? 'https://dc.services.visualstudio.com/v2/track' : 'https://browser.events.data.microsoft.com/OneCollector/1.0/';
     var webAnalyticsConfig: IWebAnalyticsConfiguration = {
       autoCapture: {
         pageView: true,
@@ -35,27 +42,19 @@ class App extends React.Component {
     };
     var config: IExtendedConfiguration = {
       instrumentationKey: instrumentationKey,
-      // Extra extensions
-      extensions: [],
-      webAnalyticsConfiguration: webAnalyticsConfig
+      endpointUrl: endpoint,
+      extensions: [
+        this.webAnalyticsPlugin,
+        this.propertiesPlugin,
+        useBreeze ? this.breezeChannelPlugin : this.breezeChannelPlugin
+      ],
+      extensionConfig: []
     };
 
-    //Initialize SDK
-    this.appInsights.initialize(config, []);
+    config.extensionConfig[this.webAnalyticsPlugin.identifier] = webAnalyticsConfig;
 
-    // Add listener for events send
-    this.appInsights.addNotificationListener({
-      eventsSent: function (events) {
-        events.forEach(event => {
-          console.log("Event sent " + event.name);
-        });
-      },
-      eventsDiscarded: function (events) {
-        events.forEach(event => {
-          console.log("Event discarded " + event.name);
-        });
-      }
-    });
+    //Initialize SDK
+    this.appInsightsCore.initialize(config, []);
   }
 }
 

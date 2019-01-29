@@ -1,4 +1,4 @@
-# Microsoft 1DS Web SDK (Beta) React Sample
+# Microsoft 1DS Web SDK SKU (Beta) React Sample
 
 
 ## Available Scripts
@@ -20,7 +20,7 @@ Installs dependencies.
 ### `npm run start`
 
 Runs the app.<br>
-Open [http://127.0.0.1:8080/src/index.html](http://127.0.0.1:8080/src/index.html) to view it in the browser.
+Open [http://127.0.0.1:8081/src/index.html](http://127.0.0.1:8081/src/index.html) to view it in the browser.
 
 
 ## Learn More

@@ -1,7 +1,11 @@
 {
   "description": "1DS React Sample App",
   "dependencies": {
-    "@ms/1ds-analytics-web-js": "^1.0.0-beta.3",
+    "@microsoft/applicationinsights-channel-js": "^1.0.0-beta.14",
+    "@ms/1ds-core-js": "^1.0.0-beta.6",
+    "@ms/1ds-post-js": "^1.0.0-beta.5",
+    "@ms/1ds-properties-js": "^1.0.0-beta.6",
+    "@ms/1ds-wa-js": "^1.0.0-beta.7",
     "connect": "^3.6.6",
     "office-ui-fabric-react": "^6.129.4",
     "react": "^16.7.0",
