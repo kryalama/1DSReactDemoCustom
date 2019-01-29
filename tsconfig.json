@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "module": "es6",
+        "moduleResolution": "node",
+        "strict": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "outDir": "./dist-esm",
+        "target": "es6",
+        "jsx": "react",
+        "sourceMap": true,
+        "declarationMap": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "importHelpers": true
+    },
+    "include": [
+        "./src/**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

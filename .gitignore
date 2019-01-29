@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/1DS.JavaScript.SampleApps.React/v15
+/node_modules
+/dist-esm
+/bundle
