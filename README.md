@@ -1,4 +1,4 @@
-# Microsoft 1DS Web SDK SKU (Beta) React Sample
+# Microsoft 1DS Web SDK (Beta) React Sample
 
 
 ## Available Scripts
