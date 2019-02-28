@@ -1,3 +1,13 @@
+---
+ArtifactType: npm package, javascript from CDN.
+Documentation: https://1dsdocs.azurewebsites.net/getting-started/javascript-getting_started.html
+Language: typescript
+Platform: various
+Stackoverflow: N/A
+Tags: 1DSJSSDK
+ms.reviewedAt: 02/27/2019
+ms.reviewedBy: ramthi
+---
 # Microsoft 1DS Web SDK (Beta) React Sample
 
 
