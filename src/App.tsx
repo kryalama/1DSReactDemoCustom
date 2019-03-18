@@ -5,7 +5,7 @@ import { ApplicationInsights, IWebAnalyticsConfiguration } from '@ms/1ds-wa-js';
 import { PropertiesPlugin } from '@ms/1ds-properties-js';
 import { PostChannel } from '@ms/1ds-post-js';
 import { GetChannel } from '@ms/1ds-get-js';
-import { CorrelationVectorManager } from '@ms/1ds-cv-js';
+import { CorrelationVectorPlugin } from '@ms/1ds-cv-js';
 import { QosPlugin } from '@ms/1ds-qos-js';
 import { LocalStorageChannel } from '@ms/1ds-localstorage-js';
 import { Sender } from '@microsoft/applicationinsights-channel-js';
@@ -20,7 +20,7 @@ class App extends React.Component {
   private collectorChannelPlugin: PostChannel = new PostChannel();
   private getChannel: GetChannel = new GetChannel();
   private localStorageChannel: LocalStorageChannel = new LocalStorageChannel();
-  private correlationVectorPlugin: CorrelationVectorManager = new CorrelationVectorManager();
+  private correlationVectorPlugin: CorrelationVectorPlugin = new CorrelationVectorPlugin();
   private qosPlugin: QosPlugin = new QosPlugin();
 
   constructor(props: any) {
@@ -54,17 +54,18 @@ class App extends React.Component {
       extensions: [
         this.webAnalyticsPlugin,
         this.propertiesPlugin,
-        this.collectorChannelPlugin,
         this.qosPlugin,
-        this.correlationVectorPlugin,
+        this.correlationVectorPlugin
+      ],
+      channels: [[
         this.localStorageChannel,
         useBreeze ? this.breezeChannelPlugin : this.collectorChannelPlugin
-      ],
+      ]],
       extensionConfig: []
     };
     if (!useBreeze) {
       // Add Get for OneCollector only
-      config.extensions.push(this.getChannel);
+      config.channels[0].push(this.getChannel);
     }
 
     // Add configurations
