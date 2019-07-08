@@ -9,6 +9,7 @@ import { CorrelationVectorPlugin } from '@ms/1ds-cv-js';
 import { QosPlugin } from '@ms/1ds-qos-js';
 import { LocalStorageChannel } from '@ms/1ds-localstorage-js';
 import { Sender } from '@microsoft/applicationinsights-channel-js';
+import { CustomTelemetryPlugin } from './CustomTelemetryPlugin';
 import Home from './Home';
 
 class App extends React.Component {
@@ -22,6 +23,7 @@ class App extends React.Component {
   private localStorageChannel: LocalStorageChannel = new LocalStorageChannel();
   private correlationVectorPlugin: CorrelationVectorPlugin = new CorrelationVectorPlugin();
   private qosPlugin: QosPlugin = new QosPlugin();
+  private customPlugin: CustomTelemetryPlugin = new CustomTelemetryPlugin();
 
   constructor(props: any) {
     super(props);
@@ -55,7 +57,8 @@ class App extends React.Component {
         this.webAnalyticsPlugin,
         this.propertiesPlugin,
         this.qosPlugin,
-        this.correlationVectorPlugin
+        this.correlationVectorPlugin,
+        this.customPlugin
       ],
       channels: [[
         this.localStorageChannel,
@@ -75,7 +78,7 @@ class App extends React.Component {
     this.appInsightsCore.initialize(config, []);
 
     // Send telemetry
-    this.appInsightsCore.track({ name: "ReactTelemetryEvent" });
+    this.appInsightsCore.track({ name: "ReactTelemetryEvent", baseData: {}, baseType: "TestBaseType" });
   }
 }
 
