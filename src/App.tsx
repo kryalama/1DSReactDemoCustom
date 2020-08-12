@@ -2,7 +2,7 @@ import * as React from 'react';
 import { initializeIcons } from '@uifabric/icons';
 import { AppInsightsCore, IExtendedConfiguration } from '@ms/1ds-core-js';
 import { ApplicationInsights, IWebAnalyticsConfiguration } from '@ms/1ds-wa-js';
-import { PropertiesPlugin } from '@ms/1ds-properties-js';
+import { PropertiesPlugin, IPropertyConfiguration  } from '@ms/1ds-properties-js';
 import { PostChannel } from '@ms/1ds-post-js';
 import { GetChannel } from '@ms/1ds-get-js';
 import { CorrelationVectorPlugin } from '@ms/1ds-cv-js';
@@ -19,16 +19,14 @@ class App extends React.Component {
   private propertiesPlugin: PropertiesPlugin = new PropertiesPlugin();
   private breezeChannelPlugin: Sender = new Sender();
   private collectorChannelPlugin: PostChannel = new PostChannel();
-  private getChannel: GetChannel = new GetChannel();
-  private localStorageChannel: LocalStorageChannel = new LocalStorageChannel();
   private correlationVectorPlugin: CorrelationVectorPlugin = new CorrelationVectorPlugin();
   private qosPlugin: QosPlugin = new QosPlugin();
-  private customPlugin: CustomTelemetryPlugin = new CustomTelemetryPlugin();
+  //private customPlugin: CustomTelemetryPlugin = new CustomTelemetryPlugin();
 
   constructor(props: any) {
     super(props);
     initializeIcons();
-    var useBreeze = false;
+    var useBreeze = true;
     this.initializeTelemetry(useBreeze);
   }
 
@@ -40,39 +38,50 @@ class App extends React.Component {
 
   private initializeTelemetry(useBreeze: boolean) {
     // Configure ApplicationInsights
-    var instrumentationKey = "YOUR_TENANT_KEY";
-    var endpoint = useBreeze ? 'https://dc.services.visualstudio.com/v2/track' : 'https://browser.events.data.microsoft.com/OneCollector/1.0/';
+
+    var instrumentationKey="YOUR IKEY";
+
+    var collectorEndpoint = 'https://browser.events.data.microsoft.com/OneCollector/1.0/';
     var webAnalyticsConfig: IWebAnalyticsConfiguration = {
       autoCapture: {
-        pageView: true,
-        click: true,
         scroll: true,
-        onUnload: true
+        pageView: true,
+        onLoad: true,
+        onUnload: true,
+        click: true,
+        resize: true,
+        jsError: true
       }
+    };
+ 
+    var propertiesPluginConfig: IPropertyConfiguration = {
+      populateBrowserInfo: true,
+      populateOperatingSystemInfo:true
     };
     var config: IExtendedConfiguration = {
       instrumentationKey: instrumentationKey,
-      endpointUrl: endpoint,
+      endpointUrl: collectorEndpoint,
       extensions: [
         this.webAnalyticsPlugin,
         this.propertiesPlugin,
-        this.qosPlugin,
-        this.correlationVectorPlugin,
-        this.customPlugin
+        //this.qosPlugin,
+        //this.correlationVectorPlugin,
+        //this.customPlugin
       ],
       channels: [[
-        this.localStorageChannel,
-        useBreeze ? this.breezeChannelPlugin : this.collectorChannelPlugin
+        this.breezeChannelPlugin,
+        this.collectorChannelPlugin
       ]],
       extensionConfig: []
     };
-    if (!useBreeze) {
-      // Add Get for OneCollector only
-      config.channels[0].push(this.getChannel);
-    }
-
     // Add configurations
     config.extensionConfig[this.webAnalyticsPlugin.identifier] = webAnalyticsConfig;
+    config.extensionConfig[this.propertiesPlugin.identifier] = propertiesPluginConfig;
+    //Breeze Configuration
+    config.extensionConfig[this.breezeChannelPlugin.identifier] = {
+      instrumentationKey: 'APPInsights-IKey',
+      endpointUrl: 'https://dc.services.visualstudio.com/v2/track',
+    };
 
     //Initialize SDK
     this.appInsightsCore.initialize(config, []);

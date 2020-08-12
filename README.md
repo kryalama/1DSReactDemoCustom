@@ -8,7 +8,7 @@ Tags: 1DSJSSDK
 ms.reviewedAt: 02/27/2019
 ms.reviewedBy: ramthi
 ---
-# Microsoft 1DS Web SDK (Beta) React Sample
+# Microsoft 1DS Web SDK React Sample -Data sent to both Breeze and Collector
 
 
 ## Available Scripts
